@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -15,15 +16,15 @@
   <!-- Иконки -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
 </head>
 <body>
 
-  <!-- Прелоадер -->
+  <!-- Прелоадер
   <div class="preloader" id="preloader">
     <div class="preloader__logo">MATIZ</div>
     <div class="preloader__bar"><span></span></div>
-  </div>
+  </div> -->
 
   <!-- Прогресс скролла -->
   <div class="scroll-progress" id="scrollProgress"></div>
