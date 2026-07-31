@@ -1,242 +1,46 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>MATIZ — Кинотеатр онлайн</title>
-  <meta name="description" content="MATIZ — яркий онлайн-кинотеатр. Тысячи фильмов и сериалов в HD." />
-  <meta name="theme-color" content="#0e1420" />
-
-  <!-- Шрифты Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-
-  <!-- Иконки -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-
-  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-</head>
-<body>
-
-  <!-- Прелоадер
-  <div class="preloader" id="preloader">
-    <div class="preloader__logo">MATIZ</div>
-    <div class="preloader__bar"><span></span></div>
-  </div> -->
-
-  <!-- Прогресс скролла -->
-  <div class="scroll-progress" id="scrollProgress"></div>
-
-  <!-- ХЕДЕР / НАВИГАЦИЯ -->
-  <header class="header" id="header">
-    <div class="container header__inner">
-      <a href="#home" class="logo"><i class="fas fa-clapperboard"></i> MATIZ</a>
-
-      <nav class="nav" id="nav">
-        <a href="#home" class="nav__link active">Главная</a>
-        <a href="#trending" class="nav__link">В тренде</a>
-        <a href="#catalog" class="nav__link">Каталог</a>
-        <a href="#new" class="nav__link">Новинки</a>
-        <a href="#subscribe" class="nav__link">Подписка</a>
-      </nav>
-
-      <div class="header__actions">
-        <button class="icon-btn" id="searchToggle" aria-label="Поиск">
-          <i class="fas fa-magnifying-glass"></i>
-        </button>
-        <button class="btn btn--primary btn--sm" id="loginBtn">Войти</button>
-        <button class="burger" id="burger" aria-label="Меню">
-          <span></span><span></span><span></span>
-        </button>
-      </div>
+<section class="section" id="apply">
+  <div class="container">
+    <div class="section__head section__head--center">
+      <h2 class="section__title">Оставить заявку</h2>
+      <p class="section__sub">7 дней премиум-доступа бесплатно. Менеджер свяжется с вами.</p>
     </div>
 
-    <!-- Строка поиска -->
-    <div class="search-bar" id="searchBar">
-      <div class="container search-bar__inner">
-        <i class="fas fa-magnifying-glass"></i>
-        <input type="text" id="searchInput" placeholder="Найти фильм по названию или жанру…" />
-        <button class="icon-btn" id="searchClose" aria-label="Закрыть"><i class="fas fa-xmark"></i></button>
+    <!-- Добавили method="POST" -->
+    <form class="apply-form" id="applyForm" method="POST" action="">
+      {% csrf_token %} <!-- Защита Django от CSRF-атак -->
+      
+      <div class="apply-form__row">
+        <input type="text" name="name" placeholder="Имя" required />
+        <input type="tel" name="phone" placeholder="Телефон" required />
       </div>
-    </div>
-  </header>
-
-  <!-- ГЕРОЙ / HERO -->
-  <section class="hero" id="home">
-    <div class="hero__slides" id="heroSlides"></div>
-    <div class="hero__overlay"></div>
-
-    <div class="container hero__content">
-      <span class="hero__badge"><i class="fas fa-clapperboard"></i> Онлайн-кинотеатр</span>
-      <h1 class="hero__title">MATIZ — кино&nbsp;без границ</h1>
-      <p class="hero__desc">Тысячи фильмов и сериалов в качестве 4K Ultra HD. Смотрите на любом устройстве, без рекламы и в любое время.</p>
-
-      <ul class="hero__features">
-        <li><i class="fas fa-clapperboard"></i> 12 500+ фильмов и сериалов</li>
-        <li><i class="fas fa-gem"></i> 4K Ultra HD и HDR</li>
-        <li><i class="fas fa-ban"></i> Без рекламы</li>
-        <li><i class="fas fa-mobile-screen"></i> На всех устройствах</li>
-      </ul>
-
-      <div class="hero__buttons">
-        <a href="#catalog" class="btn btn--primary"><i class="fas fa-film"></i> Открыть каталог</a>
-        <a href="#subscribe" class="btn btn--glass"><i class="fas fa-crown"></i> Оформить подписку</a>
-      </div>
-    </div>
-
-    <a href="#trending" class="hero__scroll"><span></span> Листай вниз</a>
-  </section>
-
-  <!-- СТАТИСТИКА -->
-  <section class="stats">
-    <div class="container stats__grid">
-      <div class="stat"><span class="stat__num" data-count="12500">0</span><span class="stat__label">Фильмов в HD</span></div>
-      <div class="stat"><span class="stat__num" data-count="3200">0</span><span class="stat__label">Сериалов</span></div>
-      <div class="stat"><span class="stat__num" data-count="98">0</span><span class="stat__label">% без рекламы</span></div>
-      <div class="stat"><span class="stat__num" data-count="4">0</span><span class="stat__label">K Ultra HD</span></div>
-    </div>
-  </section>
-
-  <!-- В ТРЕНДЕ (карусель) -->
-  <section class="section" id="trending">
-    <div class="container">
-      <div class="section__head">
-        <h2 class="section__title">🔥 Сейчас в тренде</h2>
-        <div class="carousel__nav">
-          <button class="round-btn" id="trendPrev"><i class="fas fa-chevron-left"></i></button>
-          <button class="round-btn" id="trendNext"><i class="fas fa-chevron-right"></i></button>
-        </div>
-      </div>
-      <div class="carousel" id="trendingCarousel"></div>
-    </div>
-  </section>
-
-  <!-- КАТАЛОГ + ФИЛЬТРЫ ЖАНРОВ -->
-  <section class="section section--soft" id="catalog">
-    <div class="container">
-      <div class="section__head">
-        <h2 class="section__title">🎬 Каталог фильмов</h2>
-      </div>
-
-      <div class="filters" id="filters">
-        <button class="chip active" data-genre="all">Все</button>
-        <button class="chip" data-genre="Фантастика">Фантастика</button>
-        <button class="chip" data-genre="Драма">Драма</button>
-        <button class="chip" data-genre="Боевик">Боевик</button>
-        <button class="chip" data-genre="Триллер">Триллер</button>
-        <button class="chip" data-genre="Приключения">Приключения</button>
-        <button class="chip" data-genre="Криминал">Криминал</button>
-      </div>
-
-      <div class="grid" id="movieGrid"></div>
-      <p class="empty" id="emptyState" hidden>Ничего не найдено 😕</p>
-    </div>
-  </section>
-
-  <!-- НОВИНКИ (баннер) -->
-  <section class="promo" id="new">
-    <div class="container promo__inner">
-      <div class="promo__text">
-        <span class="promo__tag">Премьера</span>
-        <h2 class="promo__title">Дюна: Часть вторая</h2>
-        <p>Пол Атрейдес объединяется с Чани и фрименами, чтобы отомстить заговорщикам, уничтожившим его семью. Эпическое продолжение уже в MATIZ.</p>
-        <button class="btn btn--primary"><i class="fas fa-play"></i> Смотреть трейлер</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- ПОДПИСКА / ТАРИФЫ -->
-  <section class="section" id="subscribe">
-    <div class="container">
-      <div class="section__head section__head--center">
-        <h2 class="section__title">Выбери свою подписку</h2>
-        <p class="section__sub">Отмена в любой момент. Первые 7 дней бесплатно.</p>
-      </div>
-      <div class="plans">
-        <div class="plan">
-          <h3>Базовый</h3>
-          <div class="plan__price">299 ₽<span>/мес</span></div>
-          <ul>
-            <li><i class="fas fa-check"></i> Full HD качество</li>
-            <li><i class="fas fa-check"></i> 1 устройство</li>
-            <li><i class="fas fa-xmark muted"></i> Без 4K</li>
-            <li><i class="fas fa-xmark muted"></i> С рекламой</li>
-          </ul>
-          <button class="btn btn--ghost">Выбрать</button>
-        </div>
-        <div class="plan plan--featured">
-          <span class="plan__badge">Популярный</span>
-          <h3>Премиум</h3>
-          <div class="plan__price">599 ₽<span>/мес</span></div>
-          <ul>
-            <li><i class="fas fa-check"></i> 4K Ultra HD + HDR</li>
-            <li><i class="fas fa-check"></i> 4 устройства</li>
-            <li><i class="fas fa-check"></i> Без рекламы</li>
-            <li><i class="fas fa-check"></i> Оффлайн-загрузки</li>
-          </ul>
-          <button class="btn btn--primary">Выбрать</button>
-        </div>
-        <div class="plan">
-          <h3>Семейный</h3>
-          <div class="plan__price">899 ₽<span>/мес</span></div>
-          <ul>
-            <li><i class="fas fa-check"></i> 4K Ultra HD + HDR</li>
-            <li><i class="fas fa-check"></i> 6 устройств</li>
-            <li><i class="fas fa-check"></i> Детский профиль</li>
-            <li><i class="fas fa-check"></i> Без рекламы</li>
-          </ul>
-          <button class="btn btn--ghost">Выбрать</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ФУТЕР -->
-  <footer class="footer">
-    <div class="container footer__inner">
-      <div class="footer__brand">
-        <a href="#home" class="logo"><i class="fas fa-clapperboard"></i> MATIZ</a>
-        <p>Твой личный кинотеатр. Смотри где угодно и когда угодно.</p>
-        <div class="socials">
-          <a href="#"><i class="fab fa-telegram"></i></a>
-          <a href="#"><i class="fab fa-instagram"></i></a>
-          <a href="#"><i class="fab fa-youtube"></i></a>
-          <a href="#"><i class="fab fa-vk"></i></a>
-        </div>
-      </div>
-      <div class="footer__col"><h4>Навигация</h4><a href="#home">Главная</a><a href="#trending">В тренде</a><a href="#catalog">Каталог</a><a href="#subscribe">Подписка</a></div>
-      <div class="footer__col"><h4>Компания</h4><a href="#">О нас</a><a href="#">Вакансии</a><a href="#">Пресса</a><a href="#">Контакты</a></div>
-      <div class="footer__col"><h4>Поддержка</h4><a href="#">Помощь</a><a href="#">Условия</a><a href="#">Конфиденциальность</a></div>
-    </div>
-    <div class="footer__bottom">© 2026 MATIZ. Все права защищены. Сделано с <i class="fas fa-heart"></i></div>
-  </footer>
-
-  <!-- МОДАЛЬНОЕ ОКНО ФИЛЬМА -->
-  <div class="modal" id="modal">
-    <div class="modal__backdrop" id="modalBackdrop"></div>
-    <div class="modal__card" id="modalCard">
-      <button class="modal__close" id="modalClose"><i class="fas fa-xmark"></i></button>
-      <div class="modal__hero"><img id="modalImg" src="" alt="" /><div class="modal__grad"></div></div>
-      <div class="modal__body">
-        <h3 id="modalTitle"></h3>
-        <div class="modal__meta" id="modalMeta"></div>
-        <p id="modalDesc"></p>
-        <div class="modal__actions">
-          <button class="btn btn--primary"><i class="fas fa-play"></i> Смотреть</button>
-          <button class="btn btn--glass" id="modalFav"><i class="fa-regular fa-heart"></i> В избранное</button>
-        </div>
-      </div>
-    </div>
+      <input type="email" name="email" placeholder="Email" required />
+      <textarea name="comment" rows="3" placeholder="Комментарий (необязательно)"></textarea>
+      
+      <label class="apply-check">
+        <input type="checkbox" name="agree" required />
+        <span>Согласен с обработкой персональных данных</span>
+      </label>
+      
+      <button type="submit" class="btn btn--primary"><i class="fas fa-paper-plane"></i> Отправить заявку</button>
+    </form>
   </div>
+</section>
 
-  <!-- Кнопка наверх -->
-  <button class="to-top" id="toTop" aria-label="Наверх"><i class="fas fa-arrow-up"></i></button>
-
-  <!-- Тост-уведомление -->
-  <div class="toast" id="toast"></div>
-
-  <script src="js/script.js"></script>
-</body>
-</html>
+<style>
+  .apply-form { max-width: 520px; margin: 0 auto; display: grid; gap: 16px;
+  background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+  border-radius: 20px; padding: 32px; }
+  .apply-form__row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .apply-form input, .apply-form textarea { width: 100%; padding: 13px 16px;
+  border-radius: 12px; color: #fff; background: rgba(14,20,32,.6);
+  border: 1px solid rgba(255,255,255,.1); font: inherit; font-size: 15px; }
+  .apply-form textarea { resize: vertical; }
+  .apply-form ::placeholder { color: rgba(255,255,255,.35); }
+  .apply-form input:focus, .apply-form textarea:focus { outline: none;
+  border-color: #e50914; box-shadow: 0 0 0 3px rgba(229,9,20,.18); }
+  .apply-check { display: flex; align-items: center; gap: 10px; cursor: pointer;
+  font-size: 14px; color: rgba(255,255,255,.7); }
+  .apply-check input { width: 18px; height: 18px; accent-color: #e50914; }
+  .apply-form .btn { justify-content: center; }
+  @media (max-width: 520px) { .apply-form__row { grid-template-columns: 1fr; } }
+</style>
